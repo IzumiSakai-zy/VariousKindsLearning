@@ -113,17 +113,17 @@
 >   //显示
 >   val intent = Intent(this, SecondActivity::class.java)
 >   startActivity(intent)
->
+>   
 >   //隐式
 >   val intent = Intent("whu.activityTest.ACTION_START")
 >   intent.addCategory("whu.activityTest.MY_CATEGORY")
 >   startActivity(intent)
->
+>   
 >   //调用系统浏览器
 >   val intent = Intent(Intent.ACTION_VIEW) //一个常量View，代表浏览器
 >   intent.data = Uri.parse("https://www.baidu.com") //传入需要解析的data内容
 >   startActivity(intent)
->
+>   
 >   //调用系统拨号界面
 >   val intent = Intent(Intent.ACTION_DIAL)
 >   intent.data = Uri.parse("tel:10086")
@@ -137,7 +137,7 @@
 >   val intent = Intent(this, SecondActivity::class)
 >   intent.putExtra("name","IzumiSakai")
 >   startActivity(intent)
->                             
+>   
 >   //接收，才onCreate(b:Bundle?) 或者onStart()中
 >   val name = intent.getStringExtra("name")
 >   ```
@@ -181,13 +181,13 @@
 >   //接收数据的一方, 进行页面跳转时
 >   //一个intent代表想跳转的activity，一个int表示唯一请求码，在后面会用
 >   startActivityForResult(intent: Intent, statusCode: Int)
->
+>   
 >   //发送数据的一方
 >   val intent = Intent() //由于不进行跳转，只是一个容纳数据的容器，因此不用进行跳转页面设置
 >   intent.putStringExtra("name","IzumiSakai")
 >   setResult(RESULT_OK,intent) //RESULT_OK表示返回的状态码，后面要用，可以不唯一
 >   finish()
->
+>   
 >   //接收数据的一方，获取传递的数据时
 >   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 >       super.onActivityResult(requestCode, resultCode, data)
@@ -227,36 +227,36 @@
 >       setContentView(R.layout.activity_main)
 >       Log.d("MainActivity","onCreateCalled")
 >   }
->
+>   
 >   //由不可见变成可见
 >   override fun onStart() {
 >       super.onStart()
 >       Log.d("MainActivity","onStartCalled")
 >   }
->
+>   
 >   //由不可交互变成可以交互
 >   override fun onResume() {
 >       super.onResume()
 >       Log.d("MainActivity","onResumeCalled")
 >   }
->
+>   
 >   //由可交互变成不可交互
 >   override fun onPause() {
 >       super.onPause()
 >       Log.d("MainActivity","onPauseCalled")
 >   }
->
+>   
 >   //由可见变成不可见
 >   override fun onStop() {
 >       super.onStop()
 >       Log.d("MainActivity","onStopCalled")
 >   }
->
+>   
 >   override fun onDestroy() {
 >       super.onDestroy()
 >       Log.d("MainActivity","onDestroyCalled")
 >   }
->
+>   
 >   //当未被销毁非处于栈顶又由于切换处于栈顶时会调用此方法
 >   override fun onRestart() {
 >       super.onRestart()
@@ -284,7 +284,7 @@
 >       super.onSaveInstanceState(outState)
 >       outState.putString("name","Izumi Sakai")
 >   }
->                             
+>   
 >   //接收数据
 >   override fun onCreate(savedInstanceState: Bundle?) {
 >       super.onCreate(savedInstanceState)
@@ -378,41 +378,19 @@
 > * 首先创建一个布局的`layout.xml`文件，自己设计样式
 >
 >   ```xml
->   <?xml version="1.0" encoding="utf-8"?>
->   <LinearLayout
->       xmlns:android="http://schemas.android.com/apk/res/android"
->       android:layout_width="match_parent"
->       android:layout_height="wrap_content"
->       android:orientation="horizontal">
->   
->      	//...
->   </LinearLayout>
+>   <?xml version="1.0" encoding="utf-8"?><LinearLayout    xmlns:android="http://schemas.android.com/apk/res/android"    android:layout_width="match_parent"    android:layout_height="wrap_content"    android:orientation="horizontal">   	//...</LinearLayout>
 >   ```
 >
 > * 创建一个kotlin类即代表这个布局的实体类
 >
 >   ```kotlin
->   class TitleLayout(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
->       init {
->           LayoutInflater.from(context).inflate(R.layout.title,this)
->           backButton.setOnClickListener {
->               val activity = context as Activity
->               activity.finish()
->           }
->           toastButton.setOnClickListener {
->               Toast.makeText(context,"toast",Toast.LENGTH_SHORT).show()
->           }
->       }
->   }
+>   class TitleLayout(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {    init {        LayoutInflater.from(context).inflate(R.layout.title,this)        backButton.setOnClickListener {            val activity = context as Activity            activity.finish()        }        toastButton.setOnClickListener {            Toast.makeText(context,"toast",Toast.LENGTH_SHORT).show()        }    }}
 >   ```
 >
 > * 在另外的`xml`布局文件中引入这个布局
 >
 >   ```xml
->   <whu.uilearning.TitleLayout
->           android:id="@+id/customer"
->           android:layout_width="wrap_content"
->           android:layout_height="wrap_content" />
+>   <whu.uilearning.TitleLayout        android:id="@+id/customer"        android:layout_width="wrap_content"        android:layout_height="wrap_content" />
 >   ```
 >
 > * 注：虽然`LinearLayout`有众多的构造函数，但只传入一个`context`参数会构造失败，还是要传`(context: Context, attrs: AttributeSet)`
@@ -441,39 +419,13 @@
 > ### SongAdapter
 >
 > ```kotlin
-> class SongAdapter(val songList: List<Song>): RecyclerView.Adapter<SongAdapter.ViewHolder>() {
-> 
->     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
->         val songIdTextView: TextView = view.findViewById(R.id.songId)
->         val songNameTextView: TextView = view.findViewById(R.id.songName)
->         val songSingerTextView: TextView = view.findViewById(R.id.songSinger)
->     }
-> 
->     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
->         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.song_item,parent,false)
->         val viewHolder = ViewHolder(view)
->         viewHolder.songNameTextView.setOnClickListener {
->             Toast.makeText(parent.context,"songname = ${viewHolder.songNameTextView.text}",Toast.LENGTH_SHORT).show()
->         }
->         return viewHolder
->     }
-> 
->     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
->         val song: Song = songList[position]
->         holder.songIdTextView.text = song.id.toString()
->         holder.songNameTextView.text = song.songName
->         holder.songSingerTextView.text = song.songSinger
->     }
-> 
->     override fun getItemCount() = songList.size
-> }
+> class SongAdapter(val songList: List<Song>): RecyclerView.Adapter<SongAdapter.ViewHolder>() {    inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){        val songIdTextView: TextView = view.findViewById(R.id.songId)        val songNameTextView: TextView = view.findViewById(R.id.songName)        val songSingerTextView: TextView = view.findViewById(R.id.songSinger)    }    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.song_item,parent,false)        val viewHolder = ViewHolder(view)        viewHolder.songNameTextView.setOnClickListener {            Toast.makeText(parent.context,"songname = ${viewHolder.songNameTextView.text}",Toast.LENGTH_SHORT).show()        }        return viewHolder    }    override fun onBindViewHolder(holder: ViewHolder, position: Int) {        val song: Song = songList[position]        holder.songIdTextView.text = song.id.toString()        holder.songNameTextView.text = song.songName        holder.songSingerTextView.text = song.songSinger    }    override fun getItemCount() = songList.size}
 > ```
 >
 > ### Main
 >
 > ```kotlin
-> recyclerView.layoutManager = LinearLayoutManager(this)
-> recyclerView.adapter = SongAdapter(songList)
+> recyclerView.layoutManager = LinearLayoutManager(this)recyclerView.adapter = SongAdapter(songList)
 > ```
 >
 > ### 垂直其他布局
@@ -490,27 +442,13 @@
 > * `ViewHolder定义`
 >
 >   ```kotlin
->   sealed class MsgViewHolder(view: View) : RecyclerView.ViewHolder(view)
->   
->   class LeftViewHolder(view: View) : MsgViewHolder(view) {
->       val leftMsg: TextView = view.findViewById(R.id.leftMsg)
->   }
->   
->   class RightViewHolder(view: View) : MsgViewHolder(view) {
->       val rightMsg: TextView = view.findViewById(R.id.rightMsg)
->   }
+>   sealed class MsgViewHolder(view: View) : RecyclerView.ViewHolder(view)class LeftViewHolder(view: View) : MsgViewHolder(view) {    val leftMsg: TextView = view.findViewById(R.id.leftMsg)}class RightViewHolder(view: View) : MsgViewHolder(view) {    val rightMsg: TextView = view.findViewById(R.id.rightMsg)}
 >   ```
 >
 > * `onCreateViewHolder使用`
 >
 >   ```kotlin
->   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = if (viewType == Msg.TYPE_RECEIVED) {
->           val view = LayoutInflater.from(parent.context).inflate(R.layout.msg_left_item, parent, false)
->           LeftViewHolder(view)
->       } else {
->           val view = LayoutInflater.from(parent.context).inflate(R.layout.msg_right_item, parent, false)
->           RightViewHolder(view)
->       }
+>   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = if (viewType == Msg.TYPE_RECEIVED) {        val view = LayoutInflater.from(parent.context).inflate(R.layout.msg_left_item, parent, false)        LeftViewHolder(view)    } else {        val view = LayoutInflater.from(parent.context).inflate(R.layout.msg_right_item, parent, false)        RightViewHolder(view)    }
 >   ```
 >
 > ***
@@ -534,12 +472,7 @@
 > * 方法一：静态在`xml`中指明全限定类名，这样一加载时就可以添加
 >
 >   ```xml
->   <androidx.fragment.app.FragmentContainerView
->       xmlns:android="http://schemas.android.com/apk/res/android"
->       android:id="@+id/fragment_container_view"
->       android:layout_width="match_parent"
->       android:layout_height="match_parent"
->       android:name="com.example.ExampleFragment" />
+>   <androidx.fragment.app.FragmentContainerView    xmlns:android="http://schemas.android.com/apk/res/android"    android:id="@+id/fragment_container_view"    android:layout_width="match_parent"    android:layout_height="match_parent"    android:name="com.example.ExampleFragment" />
 >   ```
 >
 >   * 其中`name`属性就是全限定类名
@@ -547,22 +480,15 @@
 > * 方法二：动态在代码中进行添加
 >
 >   ```kotlin
->   supportFragmentManager.commit {
->       setReorderingAllowed(true)//开启事务优化
->       add<LeftFragment>(R.id.fragment_container_view_tag,"left",bundle)
->   }
+>   supportFragmentManager.commit {    setReorderingAllowed(true)//开启事务优化    add<LeftFragment>(R.id.fragment_container_view_tag,"left",bundle)}
 >   ```
 >
 >   * 其中`commit`和`add`方法都是kotlin的拓展函数，方便了程序员进行api的调用
->   
+>
 > * 动态加载的一般写法
 >
 >   ```kotlin
->   Log.d("MainActivity","开始事物")
->   val transaction = supportFragmentManager.beginTransaction()
->   transaction.replace(R.id.linearLayout,RightFragment())
->   transaction.commit()
->   Log.d("MainActivity","事物结束")
+>   Log.d("MainActivity","开始事物")val transaction = supportFragmentManager.beginTransaction()transaction.replace(R.id.linearLayout,RightFragment())transaction.commit()Log.d("MainActivity","事物结束")
 >   ```
 >
 >   * 动态加载`Fragment`的基本操作是事物
@@ -575,11 +501,7 @@
 > * Activity发送数据
 >
 >   ```kotlin
->   supportFragmentManager.commit {
->       val bundle = Bundle()
->       bundle.putString("key","value")
->       replace<LeftFragment>(R.id.fragment_container_view_tag,"tag",bundle)
->   }
+>   supportFragmentManager.commit {    val bundle = Bundle()    bundle.putString("key","value")    replace<LeftFragment>(R.id.fragment_container_view_tag,"tag",bundle)}
 >   ```
 >
 >   * 实际上就是自定义一个Bundle然后作为参数传过去
@@ -587,12 +509,7 @@
 > * Fragment接收数据
 >
 >   ```kotlin
->   class LeftFragment: Fragment(R.layout.msg_left){
->       override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
->           super.onViewCreated(view, savedInstanceState)
->           Log.d("MainActivity",requireArguments().getString("key").toString())
->       }
->   }
+>   class LeftFragment: Fragment(R.layout.msg_left){    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {        super.onViewCreated(view, savedInstanceState)        Log.d("MainActivity",requireArguments().getString("key").toString())    }}
 >   ```
 >
 >   * 在`onViewCreated()`方法中调用`requireArguments()`获取之前传过来的`Buddle`
@@ -637,14 +554,7 @@
 > * 然后创建一个`FragmentFactory`的子类来重写方法
 >
 >   ```kotlin
->   class SongsFactory(val songs:List<String>):FragmentFactory() {
->       override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
->           when(loadFragmentClass(classLoader, className)){
->               SongsFragment::class.java -> return SongsFragment(songs)
->               else -> return super.instantiate(classLoader, className)
->           }
->       }
->   }
+>   class SongsFactory(val songs:List<String>):FragmentFactory() {    override fun instantiate(classLoader: ClassLoader, className: String): Fragment {        when(loadFragmentClass(classLoader, className)){            SongsFragment::class.java -> return SongsFragment(songs)            else -> return super.instantiate(classLoader, className)        }    }}
 >   ```
 >
 >   * 其实`when`里面的逻辑还可以加，这样就完全成了自己自定义的构造工厂了
@@ -685,27 +595,7 @@
 > ### 接收广播举例
 >
 > ```kotlin
-> class MainActivity : AppCompatActivity() {    
->     private lateinit var broadcastReceiver:TimeChangeBroadCastReceiver    
->     private var count: Int = 0    
->     inner class TimeChangeBroadCastReceiver: BroadcastReceiver(){        
->         override fun onReceive(context: Context?, intent: Intent?) {            
->             Log.d("MainActivityChange","${count++}")        
->         }    
->     }    
->     override fun onCreate(savedInstanceState: Bundle?) {        
->         super.onCreate(savedInstanceState)        
->         setContentView(R.layout.activity_main)        
->         val intentFilter = IntentFilter()        
->         intentFilter.addAction("android.intent.action.TIME_TICK")        
->         broadcastReceiver = TimeChangeBroadCastReceiver()        
->         registerReceiver(broadcastReceiver,intentFilter)    
->     }    
->     override fun onDestroy() {        
->         super.onDestroy()        
->         unregisterReceiver(broadcastReceiver)    
->     }
-> }
+> class MainActivity : AppCompatActivity() {        private lateinit var broadcastReceiver:TimeChangeBroadCastReceiver        private var count: Int = 0        inner class TimeChangeBroadCastReceiver: BroadcastReceiver(){                override fun onReceive(context: Context?, intent: Intent?) {                        Log.d("MainActivityChange","${count++}")                }        }        override fun onCreate(savedInstanceState: Bundle?) {                super.onCreate(savedInstanceState)                setContentView(R.layout.activity_main)                val intentFilter = IntentFilter()                intentFilter.addAction("android.intent.action.TIME_TICK")                broadcastReceiver = TimeChangeBroadCastReceiver()                registerReceiver(broadcastReceiver,intentFilter)        }        override fun onDestroy() {                super.onDestroy()                unregisterReceiver(broadcastReceiver)        }}
 > ```
 >
 > * 程序每隔一分钟会接收到一条系统时间变化的广播，然后可以进行相应的逻辑处理
@@ -728,23 +618,13 @@
 > * 创建一个接收器
 >
 >   ```kotlin
->   class MyReceiver: BroadcastReceiver() {    
->     override fun onReceive(context: Context?, intent: Intent?) {        
->       Toast.makeText(context,"静态注册消息",Toast.LENGTH_SHORT).show()    
->     }
->   }
+>   class MyReceiver: BroadcastReceiver() {      override fun onReceive(context: Context?, intent: Intent?) {            Toast.makeText(context,"静态注册消息",Toast.LENGTH_SHORT).show()      }}
 >   ```
 >
 > * 静态注册都是在`AndroidManifest.xml`中进行注册的
 >
 >   ```xml
->   <receiver android:name=".MyReceiver"            
->             android:enabled="true"            
->             android:exported="true" >    
->     <intent-filter>        
->       <action android:name="android.intent.action.BOOT_COMPLETED" ></action>    
->     </intent-filter>
->   </receiver>
+>   <receiver android:name=".MyReceiver"                      android:enabled="true"                      android:exported="true" >      <intent-filter>            <action android:name="android.intent.action.BOOT_COMPLETED" ></action>      </intent-filter></receiver>
 >   ```
 >
 >   * `android:exported`表示是否允许它接收本程序以外的广播。此处肯定要设置为true，因此系统开机广播不是本程序的广播
@@ -763,31 +643,19 @@
 > * 创建一个接收器
 >
 >   ```kotlin
->   class MyReceiver: BroadcastReceiver() {    
->       override fun onReceive(context: Context?, intent: Intent?) {        
->           Toast.makeText(context,"静态注册消息",Toast.LENGTH_SHORT).show()    
->       }
->   }
+>   class MyReceiver: BroadcastReceiver() {        override fun onReceive(context: Context?, intent: Intent?) {                Toast.makeText(context,"静态注册消息",Toast.LENGTH_SHORT).show()        }}
 >   ```
 >
 > * 在`AndroidManifest.xml`中进行注册
 >
 >   ```xml
->   <receiver android:name=".MyReceiver"            
->             android:enabled="true"            
->             android:exported="true" >    
->       <intent-filter>        
->           <action android:name="android.intent.action.MY_BROADCAST" ></action>    
->       </intent-filter>
->   </receiver>
+>   <receiver android:name=".MyReceiver"                      android:enabled="true"                      android:exported="true" >        <intent-filter>                <action android:name="android.intent.action.MY_BROADCAST" ></action>        </intent-filter></receiver>
 >   ```
 >
 > * 发送广播
 >
 >   ```kotlin
->   val intent = Intent("com.whu.MY_BROADCAST")
->   intent.setPackage(packageName)
->   sendBroadcast(intent)
+>   val intent = Intent("com.whu.MY_BROADCAST")intent.setPackage(packageName)sendBroadcast(intent)
 >   ```
 >
 >   * 发送过程实际上就是发送一个`Intent`
@@ -804,9 +672,7 @@
 > * 发送处
 >
 >   ```kotlin
->   val intent = Intent("com.whu.MY_BROADCAST")
->   intent.setPackage(packageName)
->   sendOrderedBroadcast(intent,null)
+>   val intent = Intent("com.whu.MY_BROADCAST")intent.setPackage(packageName)sendOrderedBroadcast(intent,null)
 >   ```
 >
 >   * 仅仅变了一处即`sendOrderedBroadcast(intent,null)`
@@ -814,12 +680,7 @@
 > * 优先级声明
 >
 >   ```xml
->   <receiver android:name=".MyReceiver"          
->             android:enabled="true"          
->             android:exported="true">    
->     <intent-filter android:priority="100">        
->       <action android:name="android.intent.action.BOOT_COMPLETED" ></action>    </intent-filter>
->   </receiver>
+>   <receiver android:name=".MyReceiver"                    android:enabled="true"                    android:exported="true">      <intent-filter android:priority="100">            <action android:name="android.intent.action.BOOT_COMPLETED" ></action>    </intent-filter></receiver>
 >   ```
 >
 >   * 仅仅加了一个`android:priority="100"`
@@ -849,22 +710,7 @@
 > * 单例类
 >
 >   ```kotlin
->   object ActivityUtil {    
->       private val list = ArrayList<Activity>()    
->       fun add(activity: Activity){        
->           list.add(activity)    
->       }    
->       fun remove(activity: Activity){        
->           list.remove(activity)    
->       }    
->       fun finishAll(){        
->           for (activity in list){            
->               if (!activity.isFinishing)                
->               activity.finish()        
->           }        
->           list.clear()    
->       }
->   }
+>   object ActivityUtil {        private val list = ArrayList<Activity>()        fun add(activity: Activity){                list.add(activity)        }        fun remove(activity: Activity){                list.remove(activity)        }        fun finishAll(){                for (activity in list){                        if (!activity.isFinishing)                            activity.finish()                }                list.clear()        }}
 >   ```
 >
 >   * 因为finish一个activity有可能需要时间比较久，因此要做一个判断，不然多线程时感觉会炸
@@ -903,20 +749,7 @@
 > ### 使用举例
 >
 > ```kotlin
-> override fun onCreate(savedInstanceState: Bundle?) {    
->     super.onCreate(savedInstanceState)    
->     setContentView(R.layout.activity_main)    
->     val sharedPreference = getSharedPreferences("song", Context.MODE_PRIVATE)    
->     val value = sharedPreference.getString("key", "默认值")    
->     editText.setText(value)
-> }
-> 
-> override fun onDestroy() {    
->     super.onDestroy()    
->     val editor = getSharedPreferences("song", Context.MODE_PRIVATE).edit()    
->     editor.putString("key","${editText.text.toString()}")    
->     editor.apply()
-> }
+> override fun onCreate(savedInstanceState: Bundle?) {        super.onCreate(savedInstanceState)        setContentView(R.layout.activity_main)        val sharedPreference = getSharedPreferences("song", Context.MODE_PRIVATE)        val value = sharedPreference.getString("key", "默认值")        editText.setText(value)}override fun onDestroy() {        super.onDestroy()        val editor = getSharedPreferences("song", Context.MODE_PRIVATE).edit()        editor.putString("key","${editText.text.toString()}")        editor.apply()}
 > ```
 >
 > ### ROOM
@@ -927,14 +760,7 @@
 > ### 导入依赖
 >
 > ```json
-> plugins {    
->     id 'kotlin-android-extensions'    
->     id 'kotlin-kapt'
-> }
-> dependencies {    
->     implementation 'androidx.room:room-runtime:2.3.0'    
->     kapt 'androidx.room:room-compiler:2.3.0'
-> }
+> plugins {        id 'kotlin-android-extensions'        id 'kotlin-kapt'}dependencies {        implementation 'androidx.room:room-runtime:2.3.0'        kapt 'androidx.room:room-compiler:2.3.0'}
 > ```
 >
 > * kapt是kotlin的一个注解处理器
@@ -943,28 +769,13 @@
 > ### entity
 >
 > ```kotlin
-> @Entity
-> data class Song(var songName:String,var songSinger:String) {    
->     @PrimaryKey(autoGenerate = true)    
->     var id: Long = 0
-> }
+> @Entitydata class Song(var songName:String,var songSinger:String) {        @PrimaryKey(autoGenerate = true)        var id: Long = 0}
 > ```
 >
 > ### dao
 >
 > ```kotlin
-> @Daointerface SongDao {    
->     @Insert    
->     fun insert(song: Song):Long    
->     @Query("delete from song where id = :id")    
->     fun deleteById(id: Long):Int    
->     @Update    
->     fun update(song:Song):Int    
->     @Query("select * from song")    
->     fun queryAll(): List<Song>    
->     @Query("select * from song where id = :id")    
->     fun queryOneById(id: Long):List<Song>
-> }
+> @Daointerface SongDao {        @Insert        fun insert(song: Song):Long        @Query("delete from song where id = :id")        fun deleteById(id: Long):Int        @Update        fun update(song:Song):Int        @Query("select * from song")        fun queryAll(): List<Song>        @Query("select * from song where id = :id")        fun queryOneById(id: Long):List<Song>}
 > ```
 >
 > * sqlite规定了ID必须是`long`类型，因此无论是entity还是dao的ID类型都要设置成long
@@ -973,26 +784,7 @@
 > * 这是一个接口，在编译时Room会自动生成一个它的实现类
 >
 > ```kotlin
-> @Database(version = 1,entities = [Song::class])
-> abstract class NeteaseDatabase: RoomDatabase() {    
->     abstract fun songDao():SongDao    
->     companion object{        
->         private var instance: NeteaseDatabase? =null        
->         @Synchronized        
->         fun getDatabase(context:Context):NeteaseDatabase{            
->             instance?.let {                
->                 return it            
->             }            
->             return Room.databaseBuilder(                
->                 context.applicationContext,                
->                 NeteaseDatabase::class.java,                
->                 "netease_database").            
->             build().apply {               
->                 instance = this            
->             }        
->         }    
->     }
-> }
+> @Database(version = 1,entities = [Song::class])abstract class NeteaseDatabase: RoomDatabase() {        abstract fun songDao():SongDao        companion object{                private var instance: NeteaseDatabase? =null                @Synchronized                fun getDatabase(context:Context):NeteaseDatabase{                        instance?.let {                                return it                        }                        return Room.databaseBuilder(                                context.applicationContext,                                NeteaseDatabase::class.java,                                "netease_database").                        build().apply {                               instance = this                        }                }        }}
 > ```
 >
 > * 注解的entitys选项是一个数组，可以填很多类
@@ -1002,13 +794,7 @@
 > ### 使用
 >
 > ```kotlin
-> val songDao = NeteaseDatabase.getDatabase(this).songDao()
-> var foreverYou = Song("Izumi Sakai","Forever You")
-> insert.setOnClickListener {    
->     thread {        
->         foreverYou.id = songDao.insert(foreverYou)    
->     }
-> }
+> val songDao = NeteaseDatabase.getDatabase(this).songDao()var foreverYou = Song("Izumi Sakai","Forever You")insert.setOnClickListener {        thread {                foreverYou.id = songDao.insert(foreverYou)        }}
 > ```
 >
 > * 主要是要先获取`SongDao`
@@ -1027,19 +813,7 @@
 > * 示例
 >
 >   ```kotlin
->   @Database(version = 2,entities = [Song::class])
->   abstract class NeteaseDatabase: RoomDatabase() {    
->       companion object{        
->           @Synchronized        
->           fun getDatabase(context:Context):NeteaseDatabase{            
->               val version1_to_2 = object : Migration(1,2){                
->                   override fun migrate(database: SupportSQLiteDatabase) {                   
->                       database.execSQL("")                
->                   }            
->               }        
->           }    
->       }
->   }
+>   @Database(version = 2,entities = [Song::class])abstract class NeteaseDatabase: RoomDatabase() {        companion object{                @Synchronized                fun getDatabase(context:Context):NeteaseDatabase{                        val version1_to_2 = object : Migration(1,2){                                override fun migrate(database: SupportSQLiteDatabase) {                                       database.execSQL("")                                }                        }                }        }}
 >   ```
 >
 > * 首先是头部注解的`version`字段给设置为2
@@ -1081,48 +855,7 @@
 > ### 代码逻辑
 >
 > ```kotlin
-> override fun onCreate(savedInstanceState: Bundle?) {    
->     super.onCreate(savedInstanceState)    
->     setContentView(R.layout.activity_main)    
->     makeCall.setOnClickListener {        
->         if (ContextCompat.checkSelfPermission(            
->             this,             
->             Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){            
->             ActivityCompat.requestPermissions(                
->                 this,                 
->                 arrayOf(Manifest.permission.CALL_PHONE),                
->                 1)        
->         }else{            
->             call()        
->         }    
->     }
-> }
-> 
-> override fun onRequestPermissionsResult(    
->     requestCode: Int,    
->     permissions: Array<out String>,    
->     grantResults: IntArray) {    
->     super.onRequestPermissionsResult(requestCode, permissions, grantResults)    
->     when(requestCode){        
->         1 ->{            
->             if (grantResults.isNotEmpty() &&                
->                 grantResults[0] == PackageManager.PERMISSION_GRANTED){                
->                 call()            
->             }else{                
->                 Toast.makeText(this,"apply for permission denied",Toast.LENGTH_SHORT).show()               }        
->         }    
->     }
-> }
-> 
-> private fun call(){    
->     try {        
->         val intent = Intent(Intent.ACTION_CALL)        
->         intent.data = Uri.parse("tel:10086")        
->         startActivity(intent)    
->     }catch (error: Exception){        
->         Log.e("MainActivity","${error.printStackTrace()}")    
->     }
-> }
+> override fun onCreate(savedInstanceState: Bundle?) {        super.onCreate(savedInstanceState)        setContentView(R.layout.activity_main)        makeCall.setOnClickListener {                if (ContextCompat.checkSelfPermission(                        this,                         Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){                        ActivityCompat.requestPermissions(                                this,                                 arrayOf(Manifest.permission.CALL_PHONE),                                1)                }else{                        call()                }        }}override fun onRequestPermissionsResult(        requestCode: Int,        permissions: Array<out String>,        grantResults: IntArray) {        super.onRequestPermissionsResult(requestCode, permissions, grantResults)        when(requestCode){                1 ->{                        if (grantResults.isNotEmpty() &&                                grantResults[0] == PackageManager.PERMISSION_GRANTED){                                call()                        }else{                                Toast.makeText(this,"apply for permission denied",Toast.LENGTH_SHORT).show()               }                }        }}private fun call(){        try {                val intent = Intent(Intent.ACTION_CALL)                intent.data = Uri.parse("tel:10086")                startActivity(intent)        }catch (error: Exception){                Log.e("MainActivity","${error.printStackTrace()}")        }}
 > ```
 >
 > ### ContentProvider两种用法
@@ -1133,54 +866,7 @@
 > ### 读其他程序数据示例
 >
 > ```kotlin
-> class  MainActivity : AppCompatActivity() {
-> 
->     var bookId: String? = null
-> 
->     override fun onCreate(savedInstanceState: Bundle?) {
->         super.onCreate(savedInstanceState)
->         setContentView(R.layout.activity_main)
->         addData.setOnClickListener {
->             // 添加数据
->             val uri = Uri.parse("content://com.example.databasetest.provider/book")
->             val values = contentValuesOf("name" to "A Clash of Kings", "author" to "George Martin", "pages" to 1040, "price" to 22.85)
->             val newUri = contentResolver.insert(uri, values)
->             bookId = newUri?.pathSegments?.get(1)
->         }
->         queryData.setOnClickListener {
->             // 查询数据
->             val uri = Uri.parse("content://com.example.databasetest.provider/book")
->             contentResolver.query(uri, null, null, null, null)?.build {
->                 while (moveToNext()) {
->                     val name = getString(getColumnIndex("name"))
->                     val author = getString(getColumnIndex("author"))
->                     val pages = getInt(getColumnIndex("pages"))
->                     val price = getDouble(getColumnIndex("price"))
->                     Log.d("MainActivity", "book name is $name")
->                     Log.d("MainActivity", "book author is $author")
->                     Log.d("MainActivity", "book pages is $pages")
->                     Log.d("MainActivity", "book price is $price")
->                 }
->                 close()
->             }
->         }
->         updateData.setOnClickListener {
->             // 更新数据
->             bookId?.let {
->                 val uri = Uri.parse("content://com.example.databasetest.provider/book/$it")
->                 val values = contentValuesOf("name" to "A Storm of Swords", "pages" to 1216, "price" to 24.05)
->                 contentResolver.update(uri, values, null, null)
->             }
->         }
->         deleteData.setOnClickListener {
->             // 删除数据
->             bookId?.let {
->                 val uri = Uri.parse("content://com.example.databasetest.provider/book/$it")
->                 contentResolver.delete(uri, null, null)
->             }
->         }
->     }
-> }
+> class  MainActivity : AppCompatActivity() {    var bookId: String? = null    override fun onCreate(savedInstanceState: Bundle?) {        super.onCreate(savedInstanceState)        setContentView(R.layout.activity_main)        addData.setOnClickListener {            // 添加数据            val uri = Uri.parse("content://com.example.databasetest.provider/book")            val values = contentValuesOf("name" to "A Clash of Kings", "author" to "George Martin", "pages" to 1040, "price" to 22.85)            val newUri = contentResolver.insert(uri, values)            bookId = newUri?.pathSegments?.get(1)        }        queryData.setOnClickListener {            // 查询数据            val uri = Uri.parse("content://com.example.databasetest.provider/book")            contentResolver.query(uri, null, null, null, null)?.build {                while (moveToNext()) {                    val name = getString(getColumnIndex("name"))                    val author = getString(getColumnIndex("author"))                    val pages = getInt(getColumnIndex("pages"))                    val price = getDouble(getColumnIndex("price"))                    Log.d("MainActivity", "book name is $name")                    Log.d("MainActivity", "book author is $author")                    Log.d("MainActivity", "book pages is $pages")                    Log.d("MainActivity", "book price is $price")                }                close()            }        }        updateData.setOnClickListener {            // 更新数据            bookId?.let {                val uri = Uri.parse("content://com.example.databasetest.provider/book/$it")                val values = contentValuesOf("name" to "A Storm of Swords", "pages" to 1216, "price" to 24.05)                contentResolver.update(uri, values, null, null)            }        }        deleteData.setOnClickListener {            // 删除数据            bookId?.let {                val uri = Uri.parse("content://com.example.databasetest.provider/book/$it")                contentResolver.delete(uri, null, null)            }        }    }}
 > ```
 >
 > ### 读其他基本用法
@@ -1212,41 +898,19 @@
 > ### 通知渠道创建
 >
 > ```kotlin
-> if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
->     val channel = NotificationChannel("id", "music comes", NotificationManager.IMPORTANCE_HIGH)
->     val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
->     manager.createNotificationChannel(channel)
-> }
+> if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){    val channel = NotificationChannel("id", "music comes", NotificationManager.IMPORTANCE_HIGH)    val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager    manager.createNotificationChannel(channel)}
 > ```
 >
 > ### 通知创建
 >
 > ```kotlin
-> val notice = NotificationCompat.Builder(this,"id")
-> 	.setContentTitle("contentTitle")
-> 	.setContentText("contentText")
-> 	.setSmallIcon(R.drawable.ic_launcher_background)
-> 	.build()
-> manager.notify(1,notice)
+> val notice = NotificationCompat.Builder(this,"id")	.setContentTitle("contentTitle")	.setContentText("contentText")	.setSmallIcon(R.drawable.ic_launcher_background)	.build()manager.notify(1,notice)
 > ```
 >
 > ### 设置通知点击事件
 >
 > ```kotlin
-> button.setOnClickListener {
->     //新增的两行代码
->     val intent = Intent(this,SecondActivity::class.java)
->     val pendingIntent = PendingIntent.getActivity(this,0,intent,0)
-> 
->     val notice = NotificationCompat.Builder(this,"id")
->     .setContentTitle("contentTitle")
->     .setContentText("contentText")
->     .setSmallIcon(R.drawable.ic_launcher_background)
->     .setContentIntent(pendingIntent)//新增的一行代码
->     .setAutoCancel(true)
->     .build()
->     manager.notify(1,notice)
-> }
+> button.setOnClickListener {    //新增的两行代码    val intent = Intent(this,SecondActivity::class.java)    val pendingIntent = PendingIntent.getActivity(this,0,intent,0)    val notice = NotificationCompat.Builder(this,"id")    .setContentTitle("contentTitle")    .setContentText("contentText")    .setSmallIcon(R.drawable.ic_launcher_background)    .setContentIntent(pendingIntent)//新增的一行代码    .setAutoCancel(true)    .build()    manager.notify(1,notice)}
 > ```
 >
 > * PendingIntent可以理解成延迟执行的Intent
@@ -1269,43 +933,13 @@
 > ### kotlin中的线程写法
 >
 > ```kotlin
-> thread{    
->   //代码逻辑
-> }
+> thread{      //代码逻辑}
 > ```
 >
 > ### 多线程异步更新UI
 >
 > ```kotlin
-> val toChangeText = 1
-> var isChanged = false
-> 
-> val handler = object : Handler(Looper.getMainLooper()){    
->     override fun handleMessage(msg: Message) {        
->         super.handleMessage(msg)        
->         when(msg.what){            
->             toChangeText -> textView.text = if (isChanged){
->                 isChanged = false;
->                 "true"
->             }else{
->                 isChanged = true;
->                 "false"
->             }        
->         }    
->     }
-> }
-> 
-> override fun onCreate(savedInstanceState: Bundle?) {    
->     super.onCreate(savedInstanceState)    
->     setContentView(R.layout.activity_main)    
->     changeText.setOnClickListener {        
->         thread {            
->             val msg = Message()            
->             msg.what = toChangeText            
->             handler.sendMessage(msg)        
->         }    
->     }
-> }
+> val toChangeText = 1var isChanged = falseval handler = object : Handler(Looper.getMainLooper()){        override fun handleMessage(msg: Message) {                super.handleMessage(msg)                when(msg.what){                        toChangeText -> textView.text = if (isChanged){                isChanged = false;                "true"            }else{                isChanged = true;                "false"            }                }        }}override fun onCreate(savedInstanceState: Bundle?) {        super.onCreate(savedInstanceState)        setContentView(R.layout.activity_main)        changeText.setOnClickListener {                thread {                        val msg = Message()                        msg.what = toChangeText                        handler.sendMessage(msg)                }        }}
 > ```
 >
 > * Android中更新UI只能在主线程中进行，在子线程中更新被认为是不安全的行为
@@ -1334,9 +968,7 @@
 > ### 启动停止Service
 >
 > ```kotlin
-> val intent = Intent(this,MainService::class)
-> startService(intent)
-> stopService(intent)
+> val intent = Intent(this,MainService::class)startService(intent)stopService(intent)
 > ```
 >
 > ### 不稳定性
@@ -1349,49 +981,19 @@
 > * 首先在Service中要重写`onBind()`方法，重写之前还要自定义绑定后可以做的事情的`Binder`对象
 >
 >   ```kotlin
->   class MainService : Service() {    
->       class DownLoadBinder: Binder() {        
->           fun startDownLoad(){            
->               Log.d("MainService","startDownload called")        
->           }        
->           fun getProgress(){            
->               Log.d("MainService","getProgress called")        
->           }    
->       }    
->       override fun onBind(intent: Intent): IBinder {        
->           Log.d("MainService","onBind called")        
->           return DownLoadBinder()    
->       }
->   }
+>   class MainService : Service() {        class DownLoadBinder: Binder() {                fun startDownLoad(){                        Log.d("MainService","startDownload called")                }                fun getProgress(){                        Log.d("MainService","getProgress called")                }        }        override fun onBind(intent: Intent): IBinder {                Log.d("MainService","onBind called")                return DownLoadBinder()        }}
 >   ```
 >
 > * 在Activity中创建一个用于实现绑定的连接connection。并在连接里面调用自定义的方法
 >
 >   ```kotlin
->   lateinit var downloadBinder: MainService.DownLoadBinder
->   private val connection = object : ServiceConnection{    
->       override fun onServiceDisconnected(name: ComponentName?) {        
->           Log.d("MainService","disconect called")    
->       }    
->       override fun onServiceConnected(name: ComponentName?, service: IBinder?) {        
->           downloadBinder = service as MainService.DownLoadBinder        
->           downloadBinder.startDownLoad()        
->           downloadBinder.getProgress()    
->       }
->   }
+>   lateinit var downloadBinder: MainService.DownLoadBinderprivate val connection = object : ServiceConnection{        override fun onServiceDisconnected(name: ComponentName?) {                Log.d("MainService","disconect called")        }        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {                downloadBinder = service as MainService.DownLoadBinder                downloadBinder.startDownLoad()                downloadBinder.getProgress()        }}
 >   ```
 >
 > * 最后绑定和解绑
 >
 >   ```kotlin
->   val intent = Intent(this,MainService::class.java)
->   startBind.setOnClickListener {
->       bindService(intent,connection,Context.BIND_AUTO_CREATE)
->   }
->           
->   stopBind.setOnClickListener {
->       unbindService(connection)
->   }
+>   val intent = Intent(this,MainService::class.java)startBind.setOnClickListener {    bindService(intent,connection,Context.BIND_AUTO_CREATE)}stopBind.setOnClickListener {    unbindService(connection)}
 >   ```
 >
 >   * 其中`Context.BIND_AUTO_CREATE`表示绑定时如果service未创建会自动创建
@@ -1423,12 +1025,7 @@
 > * IntentService就是带有多线程处理耗时逻辑，进行了高层封装的一个service
 >
 >   ```kotlin
->   class MyIntentService : IntentService("intentService") {
->       override fun onHandleIntent(intent: Intent?) {
->           //处理耗时逻辑
->           //处理完毕会自动调用stopItselt()方法
->       }
->   }
+>   class MyIntentService : IntentService("intentService") {    override fun onHandleIntent(intent: Intent?) {        //处理耗时逻辑        //处理完毕会自动调用stopItselt()方法    }}
 >   ```
 >
 > ***
@@ -1440,26 +1037,19 @@
 > * 添加控件，webview实际上就是一个控件
 >
 >   ```xml
->   <WebView
->       android:layout_width="match_parent"
->       android:layout_height="match_parent"
->       android:id="@+id/webView" />
+>   <WebView    android:layout_width="match_parent"    android:layout_height="match_parent"    android:id="@+id/webView" />
 >   ```
 >
 > * `AndroidManifest.xml`中声明网络权限和`usesCleartextTraffic`
 >
 >   ```xml
->   <uses-permission android:name="android.permission.INTERNET" />
->       <application
->           android:usesCleartextTraffic="true" />
+>   <uses-permission android:name="android.permission.INTERNET" />    <application        android:usesCleartextTraffic="true" />
 >   ```
 >
 > * 使用
 >
 >   ```kotlin
->   webView.settings.javaScriptEnabled = true
->   webView.webViewClient = WebViewClient()
->   webView.loadUrl("http://47.108.63.126")
+>   webView.settings.javaScriptEnabled = truewebView.webViewClient = WebViewClient()webView.loadUrl("http://47.108.63.126")
 >   ```
 >
 >   * 其中`webViewClient`作用是当进行网页跳转时依然使用webview，而不是打开系统的浏览器
@@ -1475,62 +1065,19 @@
 > ### ViewModel创建
 >
 > ```kotlin
-> class MainViewModel(countReserved: Int) : ViewModel() {
-> 
->     val counter: LiveData<Int>
->         get() = _counter
-> 
->     private val _counter = MutableLiveData<Int>()
-> 
->     init {
->         _counter.value = countReserved
->     }
-> 
->     fun plusOne() {
->         val count = _counter.value ?: 0
->         _counter.value = count + 1
->     }
-> 
->     fun clear() {
->         _counter.value = 0
->     }
-> }
+> class MainViewModel(countReserved: Int) : ViewModel() { val counter: LiveData<Int>     get() = _counter private val _counter = MutableLiveData<Int>() init {     _counter.value = countReserved } fun plusOne() {     val count = _counter.value ?: 0     _counter.value = count + 1 } fun clear() {     _counter.value = 0 }}
 > ```
 >
 > ### 构造工厂创建
 >
 > ```kotlin
-> class MainViewModelFactory(private val countReserved: Int) : ViewModelProvider.Factory {
-> 
->     override fun <T : ViewModel> create(modelClass: Class<T>): T {
->         return MainViewModel(countReserved) as T
->     }
-> 
-> }
+> class MainViewModelFactory(private val countReserved: Int) : ViewModelProvider.Factory { override fun <T : ViewModel> create(modelClass: Class<T>): T {     return MainViewModel(countReserved) as T }}
 > ```
 >
 > ### 使用
 >
 > ```kotlin
-> lateinit var viewModel: MainViewModel
-> lateinit var sp: SharedPreferences
-> 
-> override fun onCreate(savedInstanceState: Bundle?) {
->         super.onCreate(savedInstanceState)
->         setContentView(R.layout.activity_main)
->         sp = getPreferences(Context.MODE_PRIVATE)
->         val countReserved = sp.getInt("count_reserved", 0)
->         viewModel = ViewModelProviders.of(this, MainViewModelFactory(countReserved)).get(MainViewModel::class.java)
->         plusOneBtn.setOnClickListener {
->             viewModel.plusOne()
->         }
->         clearBtn.setOnClickListener {
->             viewModel.clear()
->         }
->         viewModel.counter.observe(this, Observer{ count ->
->             infoText.text = count.toString()
->         })
-> }
+> lateinit var viewModel: MainViewModellateinit var sp: SharedPreferencesoverride fun onCreate(savedInstanceState: Bundle?) {     super.onCreate(savedInstanceState)     setContentView(R.layout.activity_main)     sp = getPreferences(Context.MODE_PRIVATE)     val countReserved = sp.getInt("count_reserved", 0)     viewModel = ViewModelProviders.of(this, MainViewModelFactory(countReserved)).get(MainViewModel::class.java)     plusOneBtn.setOnClickListener {         viewModel.plusOne()     }     clearBtn.setOnClickListener {         viewModel.clear()     }     viewModel.counter.observe(this, Observer{ count ->         infoText.text = count.toString()     })}
 > ```
 >
 > ***
@@ -1557,12 +1104,7 @@
 > ### 定义接收者Obserer的update方法
 >
 > ```kotlin
-> @Subscribe(threadMode = ThreadMode.BACKGROUND)
-> fun subscribe(msg:MessageEvent){
->   Log.d("MainActivity","receive a message")
->   binding.buttonFirst.text = msg.msg
->   Toast.makeText(activity,"click one",Toast.LENGTH_LONG).show()
-> }
+> @Subscribe(threadMode = ThreadMode.BACKGROUND)fun subscribe(msg:MessageEvent){  Log.d("MainActivity","receive a message")  binding.buttonFirst.text = msg.msg  Toast.makeText(activity,"click one",Toast.LENGTH_LONG).show()}
 > ```
 >
 > ### 四种threadMode模式
@@ -1580,15 +1122,7 @@
 > ### 注册与解注册
 >
 > ```kotlin
-> override fun onStart() {
->   super.onStart()
->   EventBus.getDefault().register(this)
-> }
-> 
-> override fun onStop() {
->   super.onStop()
->   EventBus.getDefault().unregister(this)
-> }
+> override fun onStart() {  super.onStart()  EventBus.getDefault().register(this)}override fun onStop() {  super.onStop()  EventBus.getDefault().unregister(this)}
 > ```
 >
 > * 使用的是默认的`EventBus`对象
@@ -1610,21 +1144,7 @@
 > ### 定义`Observer`
 >
 > ```kotlin
-> class MyLifecycleObserver:LifecycleObserver {
->     @OnLifecycleEvent(Lifecycle.Event.ON_START)
->     fun onStart(){
->         Log.d("LifecycleObserver","onStart")
->     }
-> 
->     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
->     fun onStop(){
->         Log.d("LifecycleObserver","onStop")
->     }
->     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
->     fun onDestroy(){
->         Log.d("LifecycleObserver","onDestroy")
->     }
-> }
+> class MyLifecycleObserver:LifecycleObserver {    @OnLifecycleEvent(Lifecycle.Event.ON_START)    fun onStart(){        Log.d("LifecycleObserver","onStart")    }    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)    fun onStop(){        Log.d("LifecycleObserver","onStop")    }    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)    fun onDestroy(){        Log.d("LifecycleObserver","onDestroy")    }}
 > ```
 >
 > * 实现`LifecycleObserver`
@@ -1633,15 +1153,7 @@
 > ### `Obserable`订阅`Observer`
 >
 > ```kotlin
-> class FirstFragment : Fragment() {
->     private lateinit var myLifecycleObserver: MyLifecycleObserver
-> 
->     override fun onCreate(savedInstanceState: Bundle?) {
->         super.onCreate(savedInstanceState)
->         myLifecycleObserver = MyLifecycleObserver(this)
->         lifecycle.addObserver(myLifecycleObserver)
->     }
-> }
+> class FirstFragment : Fragment() {    private lateinit var myLifecycleObserver: MyLifecycleObserver    override fun onCreate(savedInstanceState: Bundle?) {        super.onCreate(savedInstanceState)        myLifecycleObserver = MyLifecycleObserver(this)        lifecycle.addObserver(myLifecycleObserver)    }}
 > ```
 >
 > ### 注
@@ -1690,10 +1202,7 @@
 > * 给`Activity`单独声明权限
 >
 > ```xml
-> <manifest>
-> <activity android:name="...."
-> 	android:permission=”com.google.socialapp.permission.SHARE_POST”
-> />
+> <manifest><activity android:name="...."	android:permission=”com.google.socialapp.permission.SHARE_POST”/>
 > ```
 >
 > * `父Activity`的权限必须是`子Activty`的真子集时，父才能启动子
@@ -1858,5 +1367,3 @@
 > ### 总
 >
 > * `无Binder不Android`
->
-> ***
